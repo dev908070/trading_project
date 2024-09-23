@@ -1,7 +1,7 @@
 # models.py
 from django.db import models
 
-class TickData(models.Model):
+class NiftyData(models.Model):
     date = models.DateField()
     time = models.TimeField()
     tick_price = models.FloatField()

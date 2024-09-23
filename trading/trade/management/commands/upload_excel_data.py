@@ -6,7 +6,7 @@ class Command(BaseCommand):
     help = "Upload data from Excel files to the database"
 
     def handle(self, *args, **kwargs):
-        directory_path = '/workspaces/trading_project/trading/NiftyRaw2024Options' 
+        directory_path = "/mnt/c/Users/devga/Downloads/NIFTYRAW/NiftyRaw2024Options"
         upload_tick_excel_to_sql(directory_path)
         self.stdout.write(self.style.SUCCESS("Data uploaded successfully"))
 

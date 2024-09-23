@@ -1,9 +1,9 @@
 import os
 import pandas as pd
 from django.db import transaction
-from trade.models import TickData
+from trade.models import NiftyData
 
-BATCH_SIZE = 1000  # Adjust batch size depending on your system's capacity
+BATCH_SIZE = 10000  # Adjust batch size depending on your system's capacity
 
 def upload_tick_excel_to_sql(directory_path):
     # Iterate over all Excel files in the directory
@@ -23,7 +23,7 @@ def upload_tick_excel_to_sql(directory_path):
                 
                 # Collect model instances to bulk create
                 model_instances = [
-                    TickData(
+                    NiftyData(
                         date=row['date'],
                         time=row['time'],
                         tick_price=row['tick_price'],
@@ -36,10 +36,11 @@ def upload_tick_excel_to_sql(directory_path):
                 # Insert data into database in batches to avoid memory overload
                 for i in range(0, len(model_instances), BATCH_SIZE):
                     with transaction.atomic():
-                        TickData.objects.bulk_create(model_instances[i:i+BATCH_SIZE])
+                        NiftyData.objects.bulk_create(model_instances[i:i+BATCH_SIZE])
                 
                 file_count += 1
                 print(f"{filename} uploaded successfully.")
+                print(file_count)
             
             except Exception as e:
                 print(f"Error processing file {filename}: {str(e)}")
